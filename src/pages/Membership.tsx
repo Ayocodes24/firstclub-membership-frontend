@@ -114,16 +114,20 @@ export function Membership() {
   };
 
   if (loading) {
-    return <div className="mx-auto max-w-5xl px-6 py-16 text-muted">Loading…</div>;
+    return <div className="mx-auto max-w-5xl px-8 py-16 text-muted">Loading…</div>;
   }
 
   if (!sub) {
     return (
-      <div className="mx-auto max-w-3xl px-6 py-16 text-center">
-        <h1 className="text-3xl font-bold mb-3">No active membership</h1>
-        <p className="text-muted mb-8">{user.name} doesn't have an active subscription right now.</p>
+      <div className="mx-auto max-w-3xl px-8 py-24 text-center">
+        <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
+          No active <span className="serif-italic font-bold">membership.</span>
+        </h1>
+        <p className="text-muted mb-10 text-lg">
+          {user.name} doesn't have an active subscription right now.
+        </p>
         <Link to="/subscribe" className="btn-primary btn-lg">Subscribe now</Link>
-        {error && <p className="text-brand-700 mt-6 text-sm">{error}</p>}
+        {error && <p className="text-red-700 mt-6 text-sm">{error}</p>}
       </div>
     );
   }
@@ -132,13 +136,15 @@ export function Membership() {
   const lowerTiers = tiers.filter(t => currentTier && t.level < currentTier.level);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <div className="flex items-center justify-between mb-8">
+    <div className="mx-auto max-w-5xl px-8 pt-12 pb-24">
+      <div className="flex items-end justify-between mb-10">
         <div>
-          <h1 className="text-3xl font-bold">My Membership</h1>
-          <p className="text-muted text-sm mt-1">Logged in as {user.name}</p>
+          <h1 className="text-5xl md:text-6xl font-display font-bold leading-[1]">
+            My <span className="serif-italic font-bold">Membership</span>
+          </h1>
+          <p className="text-muted text-sm mt-3">Logged in as {user.name}</p>
         </div>
-        <button onClick={reload} className="btn-ghost btn-sm">
+        <button onClick={reload} className="btn-secondary btn-sm">
           <RefreshCw className="size-4" /> Refresh
         </button>
       </div>
@@ -150,24 +156,45 @@ export function Membership() {
             const toTier = tiers.find(t => t.id === n.toTierId);
             const isUpgrade = n.type === 'UPGRADE_ELIGIBLE';
             return (
-              <div key={n.id} className={`card p-5 ${isUpgrade ? 'border-brand-200 bg-brand-50/40' : 'border-amber-200 bg-amber-50/60'}`}>
+              <div
+                key={n.id}
+                className={`rounded-3xl p-6 border ${
+                  isUpgrade
+                    ? 'bg-brand-800 text-cream-50 border-brand-900'
+                    : 'bg-amber-100 text-amber-950 border-amber-200'
+                }`}
+              >
                 <div className="flex items-start gap-4">
-                  <div className={`size-10 rounded-xl grid place-items-center ${isUpgrade ? 'bg-brand-600 text-white' : 'bg-amber-500 text-white'}`}>
+                  <div
+                    className={`size-11 rounded-2xl grid place-items-center shrink-0 ${
+                      isUpgrade
+                        ? 'bg-cream-50 text-brand-800'
+                        : 'bg-amber-500 text-cream-50'
+                    }`}
+                  >
                     <Bell className="size-5" />
                   </div>
                   <div className="flex-1">
-                    <div className="font-semibold flex items-center gap-2">
+                    <div className="font-display font-bold text-lg flex items-center gap-2">
                       {isUpgrade ? 'Upgrade available' : 'Tier changed'}
                       {toTier && <TierBadge tier={toTier.tierName} size="sm" />}
                     </div>
-                    <p className="text-sm text-muted mt-1">{n.reason}</p>
-                    <div className="flex gap-2 mt-3">
+                    <p className={`text-sm mt-1 ${isUpgrade ? 'text-cream-100' : 'text-amber-900'}`}>
+                      {n.reason}
+                    </p>
+                    <div className="flex gap-2 mt-4">
                       {isUpgrade ? (
                         <>
-                          <button onClick={() => handleConfirmUpgrade(n.id)} className="btn-primary btn-sm">
+                          <button
+                            onClick={() => handleConfirmUpgrade(n.id)}
+                            className="btn bg-cream-50 text-brand-800 hover:bg-cream-200 btn-md"
+                          >
                             Confirm upgrade
                           </button>
-                          <button onClick={() => handleAck(n.id)} className="btn-ghost btn-sm">
+                          <button
+                            onClick={() => handleAck(n.id)}
+                            className="btn text-cream-100 hover:bg-brand-700 btn-md"
+                          >
                             Not now
                           </button>
                         </>
@@ -186,19 +213,19 @@ export function Membership() {
       )}
 
       {/* Current subscription */}
-      <div className="card p-8 mb-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="card-warm p-10 mb-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div>
-            <div className="text-xs uppercase tracking-wider text-muted font-medium mb-2">
+            <div className="text-xs uppercase tracking-wider text-brand-800 font-semibold mb-3">
               Current Tier
             </div>
             <TierBadge tier={sub.tierName} size="lg" />
-            <div className="mt-4 flex flex-wrap gap-4 text-sm text-muted">
+            <div className="mt-6 flex flex-wrap gap-3 items-center text-sm text-muted">
               <span className="inline-flex items-center gap-1.5">
                 <Calendar className="size-4" />
                 {sub.planType} plan · expires {new Date(sub.expiresAt).toLocaleDateString()}
               </span>
-              <span className="chip bg-emerald-50 text-emerald-700">{sub.status}</span>
+              <span className="chip bg-brand-800 text-cream-50">{sub.status}</span>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -206,13 +233,13 @@ export function Membership() {
               <select
                 onChange={e => e.target.value && handleDowngrade(Number(e.target.value))}
                 defaultValue=""
-                className="rounded-lg border border-slate-200 px-3 h-11 text-sm bg-white"
+                className="rounded-full border border-brand-800/20 bg-cream-50 px-4 h-11 text-sm text-brand-800 focus:outline-none focus:ring-2 focus:ring-brand-700"
               >
                 <option value="" disabled>Downgrade to…</option>
                 {lowerTiers.map(t => <option key={t.id} value={t.id}>{t.tierName}</option>)}
               </select>
             )}
-            <button onClick={() => setConfirmCancel(true)} className="btn-danger btn-md">
+            <button onClick={() => setConfirmCancel(true)} className="btn-secondary btn-md">
               <X className="size-4" /> Cancel
             </button>
           </div>
@@ -220,7 +247,9 @@ export function Membership() {
       </div>
 
       {/* Benefits */}
-      <h2 className="text-xl font-bold mb-4">Your benefits</h2>
+      <h2 className="font-display text-3xl font-bold mb-5 text-ink">
+        Your <span className="serif-italic font-bold">benefits.</span>
+      </h2>
       {benefits.length === 0 ? (
         <p className="text-muted">No benefits unlocked at this tier.</p>
       ) : (
@@ -228,12 +257,14 @@ export function Membership() {
           {benefits.map((b, i) => {
             const Icon = benefitIcon[b.type] || Crown;
             return (
-              <div key={i} className="card p-5">
-                <div className="size-10 rounded-xl bg-brand-50 text-brand-600 grid place-items-center mb-3">
+              <div key={i} className="card p-6">
+                <div className="size-11 rounded-2xl bg-brand-800 text-cream-50 grid place-items-center mb-4">
                   <Icon className="size-5" />
                 </div>
-                <div className="font-semibold mb-1">{b.description}</div>
-                <div className="text-xs text-muted">{b.type.replace(/_/g, ' ')}</div>
+                <div className="font-semibold text-ink mb-1">{b.description}</div>
+                <div className="text-xs text-muted uppercase tracking-wide">
+                  {b.type.replace(/_/g, ' ')}
+                </div>
               </div>
             );
           })}
@@ -243,23 +274,24 @@ export function Membership() {
       {/* Cancel confirm dialog */}
       {confirmCancel && (
         <div
-          className="fixed inset-0 z-50 grid place-items-center bg-ink/40 p-4"
+          className="fixed inset-0 z-50 grid place-items-center bg-ink/50 p-4"
           onClick={() => setConfirmCancel(false)}
         >
-          <div className="card p-6 max-w-md w-full" onClick={e => e.stopPropagation()}>
-            <div className="flex items-start gap-3">
-              <div className="size-10 rounded-xl bg-brand-50 text-brand-600 grid place-items-center">
+          <div className="card p-8 max-w-md w-full" onClick={e => e.stopPropagation()}>
+            <div className="flex items-start gap-4">
+              <div className="size-11 rounded-2xl bg-amber-100 text-amber-700 grid place-items-center shrink-0">
                 <AlertTriangle className="size-5" />
               </div>
               <div className="flex-1">
-                <h3 className="font-bold mb-1">Cancel subscription?</h3>
+                <h3 className="font-display font-bold text-xl mb-2">Cancel subscription?</h3>
                 <p className="text-sm text-muted">
-                  This will end {user.name}'s membership immediately. You can re-subscribe afterwards.
+                  This will end {user.name}'s membership immediately. You can
+                  re-subscribe afterwards.
                 </p>
               </div>
             </div>
-            <div className="flex justify-end gap-2 mt-6">
-              <button onClick={() => setConfirmCancel(false)} className="btn-ghost btn-md">
+            <div className="flex justify-end gap-2 mt-8">
+              <button onClick={() => setConfirmCancel(false)} className="btn-secondary btn-md">
                 Keep it
               </button>
               <button onClick={handleCancel} className="btn-primary btn-md">

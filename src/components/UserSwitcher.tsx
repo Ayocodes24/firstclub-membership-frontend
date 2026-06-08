@@ -19,14 +19,14 @@ export function UserSwitcher() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(o => !o)}
-        className="btn-secondary btn-sm"
+        className="btn-primary h-12 px-5 text-sm"
       >
         <User className="size-4" />
         {user.name.split(' ')[0]}
         <ChevronDown className="size-4" />
       </button>
       {open && (
-        <div className="absolute right-0 mt-2 w-72 card p-2">
+        <div className="absolute right-0 mt-3 w-72 card p-2">
           <div className="px-3 py-2 text-xs uppercase tracking-wider text-muted font-medium">
             Demo as
           </div>
@@ -37,18 +37,18 @@ export function UserSwitcher() {
                 setUser(u);
                 setOpen(false);
               }}
-              className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-50 flex items-center justify-between"
+              className="w-full text-left px-3 py-2 rounded-2xl hover:bg-cream-200/60 flex items-center justify-between"
             >
               <div>
-                <div className="font-medium text-sm">{u.name}</div>
+                <div className="font-medium text-sm text-ink">{u.name}</div>
                 <div className="text-xs text-muted">
                   {u.cohort ? <>cohort: {u.cohort}</> : <>no cohort</>}
                 </div>
               </div>
-              {u.id === user.id && <Check className="size-4 text-brand-600" />}
+              {u.id === user.id && <Check className="size-4 text-brand-800" />}
             </button>
           ))}
-          <div className="px-3 pt-2 pb-1 text-[11px] text-muted border-t border-slate-100 mt-1">
+          <div className="px-3 pt-2 pb-1 text-[11px] text-muted border-t border-brand-800/10 mt-1">
             Demo users from the backend seed data. No auth — userId is sent on every request.
           </div>
         </div>

@@ -69,33 +69,51 @@ export function Subscribe() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="text-4xl font-bold mb-2">Subscribe</h1>
-      <p className="text-muted mb-8">
+    <div className="mx-auto max-w-4xl px-8 pt-16 pb-24">
+      <h1 className="text-5xl md:text-6xl font-display font-bold mb-3">
+        <span className="serif-italic font-bold">Subscribe</span>
+      </h1>
+      <p className="text-muted mb-12 text-lg">
         Subscribing as <span className="font-semibold text-ink">{user.name}</span>
-        {user.cohort && <span className="ml-2 chip bg-slate-100 text-slate-700">cohort: {user.cohort}</span>}
+        {user.cohort && (
+          <span className="ml-2 chip bg-cream-200 text-brand-800 border border-brand-800/15">
+            cohort: {user.cohort}
+          </span>
+        )}
       </p>
 
-      <section className="mb-10">
-        <h2 className="text-lg font-semibold mb-4">1. Pick a plan</h2>
-        <div className="grid sm:grid-cols-3 gap-3">
+      <section className="mb-12">
+        <h2 className="font-display text-2xl font-bold mb-5 text-ink">
+          1. Pick a plan
+        </h2>
+        <div className="grid sm:grid-cols-3 gap-4">
           {plans.map(p => (
             <button
               key={p.id}
               onClick={() => setPlanId(p.id)}
-              className={`card text-left p-5 transition ${planId === p.id ? 'ring-2 ring-brand-600 border-brand-600' : 'hover:border-slate-300'}`}
+              className={`card-warm text-left p-6 transition ${
+                planId === p.id
+                  ? 'ring-2 ring-brand-800'
+                  : 'hover:ring-1 hover:ring-brand-800/30'
+              }`}
             >
-              <div className="text-sm font-semibold">{p.planType}</div>
-              <div className="text-2xl font-bold mt-1">₹{Number(p.price).toFixed(0)}</div>
-              <div className="text-xs text-muted">{p.durationDays} days</div>
+              <div className="text-xs uppercase tracking-wider text-brand-800 font-semibold">
+                {p.planType}
+              </div>
+              <div className="font-display text-4xl font-bold mt-2">
+                ₹{Number(p.price).toFixed(0)}
+              </div>
+              <div className="text-xs text-muted mt-1">{p.durationDays} days</div>
             </button>
           ))}
         </div>
       </section>
 
-      <section className="mb-10">
-        <h2 className="text-lg font-semibold mb-4">2. Pick a tier</h2>
-        <div className="grid sm:grid-cols-3 gap-3">
+      <section className="mb-12">
+        <h2 className="font-display text-2xl font-bold mb-5 text-ink">
+          2. Pick a tier
+        </h2>
+        <div className="grid sm:grid-cols-3 gap-4">
           {allTiers.map(t => {
             const eligible = eligibleIds.has(t.id);
             return (
@@ -103,19 +121,19 @@ export function Subscribe() {
                 key={t.id}
                 onClick={() => eligible && setTierId(t.id)}
                 disabled={!eligible}
-                className={`card text-left p-5 transition relative ${
+                className={`card-warm text-left p-6 transition relative ${
                   tierId === t.id
-                    ? 'ring-2 ring-brand-600 border-brand-600'
+                    ? 'ring-2 ring-brand-800'
                     : eligible
-                    ? 'hover:border-slate-300'
+                    ? 'hover:ring-1 hover:ring-brand-800/30'
                     : 'opacity-50 cursor-not-allowed'
                 }`}
                 title={eligible ? '' : 'You are not eligible for this tier yet'}
               >
                 <TierBadge tier={t.tierName} />
-                <div className="text-xs text-muted mt-3">{t.description}</div>
+                <div className="text-sm text-ink mt-4 leading-relaxed">{t.description}</div>
                 {!eligible && (
-                  <span className="absolute top-3 right-3 chip bg-slate-100 text-slate-600">
+                  <span className="absolute top-4 right-4 chip bg-cream-100 text-muted border border-brand-800/10">
                     Locked
                   </span>
                 )}
@@ -123,14 +141,15 @@ export function Subscribe() {
             );
           })}
         </div>
-        <div className="mt-3 flex items-start gap-2 text-xs text-muted">
-          <Info className="size-4 mt-0.5 flex-shrink-0" />
+        <div className="mt-4 flex items-start gap-2 text-sm text-muted">
+          <Info className="size-4 mt-0.5 flex-shrink-0 text-brand-800" />
           <p>
             {hiddenCount > 0 ? (
               <>
                 Higher tiers are unlocked through shopping activity (orders, spend)
-                or special cohorts. Place orders in the <span className="font-medium">Simulator</span>{' '}
-                to become eligible — you'll get a notification on My Membership when a higher
+                or special cohorts. Place orders in the{' '}
+                <span className="font-medium text-ink">Simulator</span> to become
+                eligible — you'll get a notification on My Membership when a higher
                 tier opens up.
               </>
             ) : (

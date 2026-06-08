@@ -34,59 +34,68 @@ export function Simulator() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <div className="inline-flex items-center gap-2 chip bg-amber-50 text-amber-700 mb-4">
+    <div className="mx-auto max-w-3xl px-8 pt-16 pb-24">
+      <div className="inline-flex items-center gap-2 chip bg-amber-100 text-amber-900 mb-5">
         <Zap className="size-3.5" /> Demo tool
       </div>
-      <h1 className="text-4xl font-bold mb-2">Order Simulator</h1>
-      <p className="text-muted mb-8">
-        In the real product, completed orders would arrive from the checkout service.
-        Use this page to simulate one — it triggers tier re-evaluation for{' '}
-        <span className="font-semibold text-ink">{user.name}</span>, and you'll see any
-        resulting upgrade/downgrade notifications on{' '}
-        <Link to="/membership" className="text-brand-600 underline">My Membership</Link>.
+      <h1 className="text-5xl md:text-6xl font-display font-bold mb-4 leading-[1]">
+        Order <span className="serif-italic font-bold">Simulator.</span>
+      </h1>
+      <p className="text-muted mb-10 text-lg leading-relaxed">
+        In the real product, completed orders would arrive from the checkout
+        service. Use this page to simulate one — it triggers tier re-evaluation
+        for <span className="font-semibold text-ink">{user.name}</span>, and
+        you'll see any resulting upgrade/downgrade notifications on{' '}
+        <Link to="/membership" className="text-brand-800 underline underline-offset-4">
+          My Membership
+        </Link>.
       </p>
 
-      <div className="card p-6 mb-8">
-        <label className="block text-sm font-medium mb-2">Order total (₹)</label>
-        <div className="flex gap-2">
+      <div className="card p-8 mb-10">
+        <label className="block text-sm font-medium mb-3 text-ink">Order total (₹)</label>
+        <div className="flex gap-3">
           <input
             type="number"
             value={amount}
             onChange={e => setAmount(e.target.value)}
             min="1"
-            className="flex-1 rounded-lg border border-slate-200 px-4 h-11 text-base focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="flex-1 rounded-full border border-brand-800/15 bg-cream-50 px-5 h-12 text-base focus:outline-none focus:ring-2 focus:ring-brand-700"
             placeholder="150"
           />
-          <button onClick={submit} disabled={busy} className="btn-primary btn-md">
+          <button onClick={submit} disabled={busy} className="btn-primary btn-lg">
             {busy ? 'Placing…' : (<>Place order <ArrowRight className="size-4" /></>)}
           </button>
         </div>
-        <div className="mt-4 text-xs text-muted">
-          Tip: For Diya (GOLD_INVITEE), one small order is enough to trigger a GOLD upgrade
-          via the cohort rule. For users without a cohort, you'll need 5+ orders or
-          ≥ ₹5,000 spend in 30 days.
+        <div className="mt-5 text-sm text-muted">
+          <span className="font-medium text-ink">Tip:</span> For Diya
+          (GOLD_INVITEE), one small order is enough to trigger a GOLD upgrade
+          via the cohort rule. For users without a cohort, you'll need 5+ orders
+          or ≥ ₹5,000 spend in 30 days.
         </div>
       </div>
 
       {recent.length > 0 && (
         <>
-          <h2 className="text-lg font-bold mb-3">Recent orders this session</h2>
-          <div className="card divide-y divide-slate-100">
+          <h2 className="font-display text-2xl font-bold mb-4 text-ink">
+            Recent orders this session
+          </h2>
+          <div className="card divide-y divide-brand-800/10">
             {recent.map(o => (
-              <div key={o.id} className="px-5 py-3 flex items-center justify-between">
+              <div key={o.id} className="px-6 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Package className="size-4 text-muted" />
-                  <span className="font-medium text-sm">Order #{o.id}</span>
+                  <Package className="size-4 text-brand-800" />
+                  <span className="font-medium text-sm text-ink">Order #{o.id}</span>
                   <span className="text-xs text-muted">
                     {o.completedAt ? new Date(o.completedAt).toLocaleTimeString() : ''}
                   </span>
                 </div>
-                <div className="font-semibold">₹{Number(o.totalAmount).toFixed(0)}</div>
+                <div className="font-display font-bold text-lg">
+                  ₹{Number(o.totalAmount).toFixed(0)}
+                </div>
               </div>
             ))}
           </div>
-          <Link to="/membership" className="btn-primary btn-md mt-6">
+          <Link to="/membership" className="btn-primary btn-md mt-8">
             Open My Membership <ArrowRight className="size-4" />
           </Link>
         </>
