@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowRight, AlertCircle } from 'lucide-react';
+import { ArrowRight, Info } from 'lucide-react';
 import { getPlans, getTiers } from '../api/catalog';
+import { getEligibleTiers } from '../api/membership';
 import { subscribe } from '../api/subscriptions';
 import { useUser } from '../context/UserContext';
 import { useToast } from '../components/Toast';
@@ -15,22 +16,33 @@ export function Subscribe() {
   const [search] = useSearchParams();
 
   const [plans, setPlans] = useState<PlanResponse[]>([]);
-  const [tiers, setTiers] = useState<TierResponse[]>([]);
+  const [allTiers, setAllTiers] = useState<TierResponse[]>([]);
+  const [eligibleTiers, setEligibleTiers] = useState<TierResponse[]>([]);
   const [planId, setPlanId] = useState<number | null>(null);
   const [tierId, setTierId] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    Promise.all([getPlans(), getTiers()]).then(([p, t]) => {
-      const sortedT = [...t].sort((a, b) => a.level - b.level);
+    Promise.all([
+      getPlans(),
+      getTiers(),
+      getEligibleTiers(user.id),
+    ]).then(([p, t, e]) => {
+      const sortedAll = [...t].sort((a, b) => a.level - b.level);
+      const sortedEligible = [...e].sort((a, b) => a.level - b.level);
       setPlans(p);
-      setTiers(sortedT);
+      setAllTiers(sortedAll);
+      setEligibleTiers(sortedEligible);
+
       const preselect = Number(search.get('planId'));
       if (preselect && p.find(x => x.id === preselect)) setPlanId(preselect);
       else if (p[0]) setPlanId(p[0].id);
-      if (sortedT[0]) setTierId(sortedT[0].id);
+      if (sortedEligible[0]) setTierId(sortedEligible[0].id);
     });
-  }, [search]);
+  }, [search, user.id]);
+
+  const eligibleIds = new Set(eligibleTiers.map(t => t.id));
+  const hiddenCount = allTiers.length - eligibleTiers.length;
 
   const submit = async () => {
     if (!planId || !tierId) return;
@@ -84,20 +96,47 @@ export function Subscribe() {
       <section className="mb-10">
         <h2 className="text-lg font-semibold mb-4">2. Pick a tier</h2>
         <div className="grid sm:grid-cols-3 gap-3">
-          {tiers.map(t => (
-            <button
-              key={t.id}
-              onClick={() => setTierId(t.id)}
-              className={`card text-left p-5 transition ${tierId === t.id ? 'ring-2 ring-brand-600 border-brand-600' : 'hover:border-slate-300'}`}
-            >
-              <TierBadge tier={t.tierName} />
-              <div className="text-xs text-muted mt-3">{t.description}</div>
-            </button>
-          ))}
+          {allTiers.map(t => {
+            const eligible = eligibleIds.has(t.id);
+            return (
+              <button
+                key={t.id}
+                onClick={() => eligible && setTierId(t.id)}
+                disabled={!eligible}
+                className={`card text-left p-5 transition relative ${
+                  tierId === t.id
+                    ? 'ring-2 ring-brand-600 border-brand-600'
+                    : eligible
+                    ? 'hover:border-slate-300'
+                    : 'opacity-50 cursor-not-allowed'
+                }`}
+                title={eligible ? '' : 'You are not eligible for this tier yet'}
+              >
+                <TierBadge tier={t.tierName} />
+                <div className="text-xs text-muted mt-3">{t.description}</div>
+                {!eligible && (
+                  <span className="absolute top-3 right-3 chip bg-slate-100 text-slate-600">
+                    Locked
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
         <div className="mt-3 flex items-start gap-2 text-xs text-muted">
-          <AlertCircle className="size-4 mt-0.5" />
-          <p>You can pick any tier at signup. Tier upgrades later are activity-based and require your confirmation.</p>
+          <Info className="size-4 mt-0.5 flex-shrink-0" />
+          <p>
+            {hiddenCount > 0 ? (
+              <>
+                Higher tiers are unlocked through shopping activity (orders, spend)
+                or special cohorts. Place orders in the <span className="font-medium">Simulator</span>{' '}
+                to become eligible — you'll get a notification on My Membership when a higher
+                tier opens up.
+              </>
+            ) : (
+              <>You're eligible for every tier — pick any one.</>
+            )}
+          </p>
         </div>
       </section>
 

@@ -22,6 +22,15 @@ demo users (`Aarav`, `Diya`, `Rohan`, `Ishita`). Diya, Rohan, and Ishita
 have cohorts (`GOLD_INVITEE`, `VIP`, `EMPLOYEE`) — those are the easiest
 ones for triggering upgrades.
 
+The **Subscribe** page only shows tiers the active user is currently
+eligible for. Higher tiers are marked "Locked" with a hint to use the
+Simulator to earn them through activity. So:
+
+- **Aarav** (no cohort) can only pick SILVER.
+- **Diya** (GOLD_INVITEE) can pick SILVER or GOLD.
+- **Rohan** (VIP) can pick SILVER or PLATINUM (not GOLD — the GOLD cohort rule doesn't include VIP).
+- **Ishita** (EMPLOYEE) can pick SILVER or PLATINUM.
+
 ---
 
 ## How to run
