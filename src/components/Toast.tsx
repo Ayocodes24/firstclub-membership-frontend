@@ -30,7 +30,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ push }}>
       {children}
-      <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">
+      <div className="fixed top-24 right-6 z-50 flex flex-col gap-2 pointer-events-none">
         {toasts.map(t => (
           <ToastView key={t.id} toast={t} />
         ))}
@@ -42,25 +42,25 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 function ToastView({ toast }: { toast: Toast }) {
   const palette = {
     success: {
-      bg: 'bg-emerald-50 border-emerald-200 text-emerald-900',
+      bg: 'bg-brand-800 text-cream-50 border-brand-900',
       Icon: CheckCircle2,
-      iconCls: 'text-emerald-600',
+      iconCls: 'text-cream-50',
     },
     error: {
-      bg: 'bg-brand-50 border-brand-200 text-brand-900',
+      bg: 'bg-red-50 text-red-900 border-red-200',
       Icon: AlertCircle,
-      iconCls: 'text-brand-600',
+      iconCls: 'text-red-600',
     },
     info: {
-      bg: 'bg-slate-100 border-slate-200 text-slate-900',
+      bg: 'bg-cream-200 text-ink border-brand-800/20',
       Icon: Info,
-      iconCls: 'text-slate-600',
+      iconCls: 'text-brand-800',
     },
   }[toast.kind];
   const { Icon } = palette;
   return (
     <div
-      className={`pointer-events-auto flex items-start gap-3 ${palette.bg} border rounded-xl px-4 py-3 shadow-card max-w-md`}
+      className={`pointer-events-auto flex items-start gap-3 ${palette.bg} border rounded-2xl px-4 py-3 shadow-card max-w-md`}
     >
       <Icon className={`size-5 mt-0.5 ${palette.iconCls}`} />
       <p className="text-sm leading-snug">{toast.message}</p>

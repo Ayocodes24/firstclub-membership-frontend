@@ -7,43 +7,63 @@
     height: 100%;
   }
   body {
-    @apply bg-canvas text-ink font-sans antialiased;
+    @apply bg-cream-100 text-ink font-sans antialiased;
     font-feature-settings: "ss01", "cv11";
   }
   h1, h2, h3, h4 {
     @apply font-display tracking-tight;
+    font-feature-settings: "ss01";
   }
 }
 
 @layer components {
+  /* Button base */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium
            transition active:scale-[0.98] focus:outline-none focus:ring-2
-           focus:ring-offset-2 focus:ring-brand-500 disabled:opacity-50
-           disabled:cursor-not-allowed;
+           focus:ring-offset-2 focus:ring-offset-cream-100 focus:ring-brand-700
+           disabled:opacity-50 disabled:cursor-not-allowed;
   }
+  /* Filled forest-green pill — matches the "Download App" CTA */
   .btn-primary {
-    @apply btn bg-brand-600 text-white hover:bg-brand-700
-           shadow-sm shadow-brand-600/20;
+    @apply btn bg-brand-800 text-white hover:bg-brand-700 shadow-soft;
   }
+  /* Cream pill with thin green border */
   .btn-secondary {
-    @apply btn bg-white text-ink border border-slate-200 hover:bg-slate-50;
+    @apply btn bg-cream-50 text-brand-800 border border-brand-800/20
+           hover:bg-cream-200/60;
   }
   .btn-ghost {
-    @apply btn text-ink hover:bg-slate-100;
+    @apply btn text-brand-800 hover:bg-cream-200/60;
   }
   .btn-danger {
-    @apply btn text-brand-700 hover:bg-brand-50;
+    @apply btn text-brand-800 hover:bg-cream-200/60;
   }
-  .btn-sm { @apply h-9 px-3 text-sm; }
+  .btn-sm { @apply h-9  px-4 text-sm; }
   .btn-md { @apply h-11 px-5 text-sm; }
   .btn-lg { @apply h-12 px-6 text-base; }
 
+  /* Card surface — light cream with subtle border */
   .card {
-    @apply bg-white border border-slate-200 rounded-2xl shadow-soft;
+    @apply bg-cream-50 border border-brand-800/10 rounded-3xl shadow-soft;
   }
+  /* Warmer card variant (matches the catalog tiles on firstclub.site) */
+  .card-warm {
+    @apply bg-cream-200 border border-brand-800/10 rounded-3xl;
+  }
+
   .chip {
     @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs
            font-medium;
+  }
+
+  /* Serif accent — used for the green italic line in the hero */
+  .serif-italic {
+    @apply font-display italic font-medium text-brand-800;
+  }
+
+  /* Pill-shaped header capsule */
+  .header-capsule {
+    @apply mx-auto max-w-[1400px] mt-4 px-4;
   }
 }

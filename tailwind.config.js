@@ -7,32 +7,42 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Forest green — the FirstClub wordmark / primary button colour.
         brand: {
-          50: '#FEF2F2',
-          100: '#FEE2E2',
-          200: '#FECACA',
-          300: '#FCA5A5',
-          400: '#F87171',
-          500: '#EF4444',
-          600: '#DC2626',
-          700: '#B91C1C',
-          800: '#991B1B',
-          900: '#7F1D1D',
+          50:  '#F0F6F1',
+          100: '#DDEAE1',
+          200: '#B8D2C0',
+          300: '#8DB596',
+          400: '#5F926A',
+          500: '#3D7649',
+          600: '#2D5E37',
+          700: '#234A2D',
+          800: '#1F4030',   // primary
+          900: '#152C20',
         },
-        ink: '#0F172A',
-        canvas: '#FAFAFA',
-        muted: '#64748B',
+        // Warm cream — the page background and card surfaces.
+        cream: {
+          50:  '#FDFAF0',
+          100: '#FAF3E0',   // page bg
+          200: '#F4E5BF',   // card bg
+          300: '#EBD391',
+          400: '#DCBC5F',
+        },
+        ink:   '#1A1612',
+        muted: '#6B6258',
       },
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-        display: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        sans:    ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        display: ['Fraunces', 'Georgia', 'Times New Roman', 'serif'],
       },
       borderRadius: {
         'xl2': '1.25rem',
+        '3xl': '1.5rem',
+        '4xl': '2rem',
       },
       boxShadow: {
-        'soft': '0 1px 3px rgba(15,23,42,0.04), 0 1px 2px rgba(15,23,42,0.06)',
-        'card': '0 4px 14px rgba(15,23,42,0.06)',
+        'soft': '0 1px 3px rgba(31,64,48,0.05), 0 1px 2px rgba(31,64,48,0.06)',
+        'card': '0 4px 14px rgba(31,64,48,0.06)',
       },
     },
   },
